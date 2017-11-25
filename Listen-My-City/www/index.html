@@ -16,28 +16,312 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript">
+        $(document).ready(function () {
+            $('#selectme').on('click', function () {
+                if ($('ul#options').is(':hidden')) {
+                    $('ul#options').show();
+                    $('#arrow').removeClass('down');
+                    $('#arrow').addClass('up');
+                }
+                else {
+                    $('ul#options').hide();
+                    $('#arrow').removeClass('up');
+                    $('#arrow').addClass('down');
+                }
+            });
+
+            $('#arrow').on('click', function () {
+                if ($(this).hasClass('down')) {
+                    $('ul#options').show();
+                    $(this).removeClass('down');
+                    $(this).addClass('up');
+                }
+                else {
+                    $('ul#options').hide();
+                    $(this).removeClass('up');
+                    $(this).addClass('down');
+                }
+            });
+
+            $('#options li a').on('click', function () {
+                var value = $(this).text();
+                $('#selectme').text(value);
+                $('ul#options').hide();
+            });
+        });
+
         var map;
+        var marker;
+        var mitad;
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 38.386872737051846, lng: -0.5116345212667255 },
+                center: { lat: 37.977166, lng: -0.675227  },
                 zoom: 16
             });
             navigator.geolocation.getCurrentPosition(onSuccess = function (pos) { });
+
+            var miMarker = new google.maps.Marker({
+                position: { lat: 37.977166, lng: -0.675227 },
+                icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                map: map
+            });
+
+            
+            miMarker.addListener('click', function () {
+                map.setCenter(miMarker.position);
+                map.setZoom(16);
+                mostrarMenu(false);
+                mitad = false;
+            });
+
+            marker = new google.maps.Marker({
+                
+                position: { lat: 37.974181, lng: -0.67493 },
+                map: map
+            });
+
+            marker.addListener('click', function () {
+                if (mitad) {
+                    mitad = false;
+                    map.setCenter(marker.position);
+                }else {
+                    mitad = true;
+                    map.setCenter({ lat: 37.971181, lng: -0.67493 });
+                }
+                map.setZoom(16);
+               mostrarMenu(mitad,1);
+               
+            });
         }
 
+        function mostrarMenu(mitad,id) {
+            if (mitad) {
+                document.getElementById('map').style.height = "25%";
+                
+            } else {
+                document.getElementById('map').style.height = "96.5%";
+                $("#div1").hide("fast");
+                $("#div2").hide("fast");
+                $("#div3").hide("fast");
+            }
+
+            switch (id) {
+                case 1:
+                    $("#div1").show("fast");
+                    $("#div2").hide("fast");
+                    $("#div3").hide("fast");
+                    break;
+
+                case 2:
+                    $("#div2").show("fast");
+                    $("#div1").hide("fast");
+                    $("#div3").hide("fast");
+                    break;
+
+                case 3:
+                    $("#div3").show("fast");
+                    $("#div2").hide("fast");
+                    $("#div1").hide("fast");
+                    break;
+            }
+        }
+
+        function botonCerrar() {
+            mostrarMenu(false);
+            mitad = false;
+            map.setCenter(marker.position);
+        }
+
+        function centrar() {
+            mostrarMenu(false);
+            mitad = false;
+            map.setCenter({ lat: 37.977166, lng: -0.675227 });
+        }
     </script>
 
     <style>
-        body, html, section, article, #map {
+        body, html {
             height: 100%;
+        }
+        section, article, #map {
+            height: 96.5%;
+        }
+        
+        #menu {
+            float: left;
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+            background-color: #000000;
+        }
+
+        #menu li {
+            float: left;
+            list-style: none;
+        }
+
+        #menu li a {
+            background-color: #000000;
+            color: #FFFFFF;
+            padding: 10px 20px;
+            text-decoration: none;
+            width: 100%;
+            float: left;
+        }
+
+        #menu li a:hover {
+            background-color: #EEEEEE;
+            color: #000000;
+        }
+
+        .menu_select {
+            width: 97%;
+            display: none;
+            position: relative;
+        }
+
+        #selectme {
+            width: 80%;
+            background-color: #000000;
+            color: #ffffff;
+            padding: 10px;
+            font-weight: bold;
+            text-align: left;
+            cursor: pointer;
+            float: left;
+        }
+
+        ul#options {
+            width: 100%;
+            float: left;
+            margin: 0px;
+            padding: 0px;
+            display: none;
+        }
+
+        ul#options li {
+            width: 98%;
+            float: left;
+        }
+
+        ul#options li a {
+            color: #ffffff;
+            padding: 10px;
+            font-weight: bold;
+            text-align: left;
+            text-decoration: none;
+            cursor: pointer;
+            margin-bottom: 1px;
+            width: 100%;
+            float: left;
+        }
+
+        ul#options li a:hover {
+            color: #000000;
+            background-color: #EEEEEE;
+            text-decoration: none;
+        }
+
+        ul#options li:hover {
+        }
+
+        #arrow {
+            position: absolute;
+            right: 10px;
+            top: 12px;
+            cursor: pointer;
+        }
+
+        .down {
+            background-image: url("../images/plus-white.png");
+            background-repeat: no-repeat;
+            height: 20px;
+            width: 20px;
+        }
+
+        .up {
+            background-image: url("../images/minus-white.png");
+            background-repeat: no-repeat;
+            height: 20px;
+            width: 20px;
+        }
+
+        @media only screen and (max-width: 980px) {
+            nav ul {
+                display: none;
+            }
+
+            nav select {
+                display: inline-block;
+                width: 100%;
+                background-color: #000;
+                color: #FFF;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            nav .menu_select {
+                display: inline-block;
+                width: 100%;
+                background-color: #000;
+                color: #FFF;
+                font-size: 16px;
+                font-weight: bold;
+            }
         }
     </style>
 
     <section data-role="page">
+        <header>
+            <nav>
+                
+                <div class="menu_select">
+                    <div id="selectme">MAPA</div>
+                    <span id="arrow" class="down"></span>
+                    <ul id="options">
+                        <li><a href="#">MAPA</a></li>
+                        <li><a href="#" onClick="">PERFIL</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
         <article role="main" class="ui-content">
             <div id="map">
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4HhUAsfP6CHhVXxQpgElFMp6xgdblFZk&callback=initMap" async defer></script>
+            </div>
+            <button class="ui-btn ui-shadow">Grabar audio</button>
+            <button class="ui-btn ui-shadow" onClick="centrar()" style="float: right;">Centrar ubicación</button><br>
+            
+            <div id="div1" hidden="hidden">
+                <button class="ui-btn ui-shadow" onClick="botonCerrar()" style="float: right;">X</button>
+                <h1 id="h1"><strong>Cova Tallada, Xàbia</strong></h1>
+                <img id="img" src="images/Cova1.png" class="img-rounded">
+                <img id="img" src="images/Cova2.png" class="img-rounded">
+                <audio controls="controls">
+                    <source src="audios/vacio.mp3" type="audio/mpeg" />
+                </audio>
+                <p id="contador">&emsp;462 veces reproducido</p>
+                <h2 id="p">&emsp;Valoración:</h2><h2>&emsp; &#9733; &#9733; &#9733; &#9733; &#9734;</h2>
+                </br></br>
+                <h3>&emsp;&emsp;Comentarios:</h3>
+                <a>&emsp;&emsp;Juan Eustaquio &emsp;&emsp; &#9733; &#9733; &#9733; &#9733; &#9733;</a>
+                <p>&emsp;Mejor dejar el coche en Denia, cerca del Restaurante </br>&emsp;Mena. Solo se puede llegar andando en 20-30 minutos</p>
+            </div>
+
+            <div id="div2" hidden="hidden">
+                <button class="ui-btn ui-shadow" onClick="botonCerrar()" style="float: right;">X</button>
+                <h1 id="h1">Audio 2</h1>
+                <img id="img" src="images/cordova.png" class="img-rounded">
+                <p id="p">Valoración:</p><h2> &#9733; &#9733; &#9734; &#9734; &#9734;</h2>
+            </div>
+
+            <div id="div3" hidden="hidden">
+                <button class="ui-btn ui-shadow" onClick="botonCerrar()" style="float: right;">X</button>
+                <h1 id="h1">Audio 3</h1>
+                <img id="img" src="images/cordova.png" class="img-rounded">
+                <p id="p">Valoración:</p><h2> &#9733; &#9733; &#9734; &#9734; &#9734;</h2>
             </div>
         </article>
     </section>
