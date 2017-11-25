@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+    <title>ListenMyCity</title>
+</head>
+
+<body>
+    <script src="scripts/jquery-1.8.0.min.js"></script>
+    <script src="scripts/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+    <script type="text/javascript">
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 38.386872737051846, lng: -0.5116345212667255 },
+                zoom: 16
+            });
+            navigator.geolocation.getCurrentPosition(onSuccess = function (pos) { });
+        }
+
+    </script>
+
+    <style>
+        body, html, section, article, #map {
+            height: 100%;
+        }
+    </style>
+
+    <section data-role="page">
+        <article role="main" class="ui-content">
+            <div id="map">
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4HhUAsfP6CHhVXxQpgElFMp6xgdblFZk&callback=initMap" async defer></script>
+            </div>
+        </article>
+    </section>
+</body>
+</html>
