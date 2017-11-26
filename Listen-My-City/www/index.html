@@ -17,7 +17,9 @@
     <script type="text/javascript" src="scripts/platformOverrides.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!--Logica interna del programa-->
     <script type="text/javascript">
+        // Menu superior
         $(document).ready(function () {
             $('#selectme').on('click', function () {
                 if ($('ul#options').is(':hidden')) {
@@ -139,6 +141,7 @@
 
         }
 
+        // Menu inferior
         function mostrarMenu(mitad,id) {
             if (mitad) {
                 document.getElementById('map').style.height = "25%";
@@ -171,6 +174,7 @@
             }
         }
 
+        // Funciones especificas
         function botonCerrar() {
             mostrarMenu(false);
             mitad = false;
