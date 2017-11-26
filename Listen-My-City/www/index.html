@@ -54,6 +54,8 @@
 
         var map;
         var marker;
+        var marker2;
+        var marker3;
         var mitad;
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
@@ -62,13 +64,32 @@
             });
             navigator.geolocation.getCurrentPosition(onSuccess = function (pos) { });
 
+            //Markers
             var miMarker = new google.maps.Marker({
                 position: { lat: 37.977166, lng: -0.675227 },
                 icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
                 map: map
             });
 
-            
+            marker = new google.maps.Marker({
+
+                position: { lat: 37.974181, lng: -0.67493 },
+                map: map
+            });
+
+            marker2 = new google.maps.Marker({
+
+                position: { lat: 37.975037, lng: -0.67260 },
+                map: map
+            });
+
+            marker3 = new google.maps.Marker({
+
+                position: { lat: 37.977166, lng: -0.675107 },
+                map: map
+            });
+
+            //Listeners
             miMarker.addListener('click', function () {
                 map.setCenter(miMarker.position);
                 map.setZoom(16);
@@ -76,24 +97,46 @@
                 mitad = false;
             });
 
-            marker = new google.maps.Marker({
-                
-                position: { lat: 37.974181, lng: -0.67493 },
-                map: map
-            });
-
             marker.addListener('click', function () {
                 if (mitad) {
                     mitad = false;
                     map.setCenter(marker.position);
-                }else {
+                } else {
                     mitad = true;
-                    map.setCenter({ lat: 37.971181, lng: -0.67493 });
+                    map.setCenter({ lat: 37.971181, lng: -0.67493 }); // falseada -0.003
                 }
                 map.setZoom(16);
-               mostrarMenu(mitad,1);
-               
+                mostrarMenu(mitad, 1);
+
             });
+
+            marker2.addListener('click', function () {
+                if (mitad) {
+                    mitad = false;
+                    map.setCenter(marker2.position);
+                } else {
+                    mitad = true;
+                    map.setCenter({ lat: 37.972037, lng: -0.67260 }); // falseada -0.003
+                }
+                map.setZoom(16);
+                mostrarMenu(mitad, 2);
+
+            });
+
+            marker3.addListener('click', function () {
+                if (mitad) {
+                    mitad = false;
+                    map.setCenter(marker3.position);
+                } else {
+                    mitad = true;
+                    map.setCenter({ lat: 37.974166, lng: -0.675107 }); // falseada -0.003
+                }
+                map.setZoom(16);
+                mostrarMenu(mitad, 3);
+
+            });
+
+
         }
 
         function mostrarMenu(mitad,id) {
@@ -138,6 +181,10 @@
             mostrarMenu(false);
             mitad = false;
             map.setCenter({ lat: 37.977166, lng: -0.675227 });
+        }
+
+        function aumentar() {
+            document.getElementById('contador').innerHTML = "&emsp;463 veces reproducido";
         }
     </script>
 
@@ -270,6 +317,10 @@
                 font-size: 16px;
                 font-weight: bold;
             }
+
+            audio {
+                width: 100%
+            }
         }
     </style>
 
@@ -281,8 +332,9 @@
                     <div id="selectme">MAPA</div>
                     <span id="arrow" class="down"></span>
                     <ul id="options">
-                        <li><a href="#">MAPA</a></li>
                         <li><a href="#" onClick="">PERFIL</a></li>
+                        <li><a href="#">FILTROS</a></li>
+                        <li><a href="#">MAPA</a></li>
                     </ul>
                 </div>
             </nav>
@@ -299,29 +351,47 @@
                 <h1 id="h1"><strong>Cova Tallada, Xàbia</strong></h1>
                 <img id="img" src="images/Cova1.png" class="img-rounded">
                 <img id="img" src="images/Cova2.png" class="img-rounded">
-                <audio controls="controls">
-                    <source src="audios/vacio.mp3" type="audio/mpeg" />
+                <audio onPlay="aumentar()" controls="controls">
+                    <source src="audios/Audio%20bueno.ogg" type="audio/ogg" />
                 </audio>
+                <p>&emsp;Subido por: Emilio Gil</p>
                 <p id="contador">&emsp;462 veces reproducido</p>
-                <h2 id="p">&emsp;Valoración:</h2><h2>&emsp; &#9733; &#9733; &#9733; &#9733; &#9734;</h2>
-                </br></br>
-                <h3>&emsp;&emsp;Comentarios:</h3>
-                <a>&emsp;&emsp;Juan Eustaquio &emsp;&emsp; &#9733; &#9733; &#9733; &#9733; &#9733;</a>
-                <p>&emsp;Mejor dejar el coche en Denia, cerca del Restaurante </br>&emsp;Mena. Solo se puede llegar andando en 20-30 minutos</p>
+                <h2>&emsp; &#9733; &#9733; &#9733; &#9733; &#9734;(304)</h2>
+                <br /><br />
+                <h2>&emsp;Comentarios:</h2>
+                <h3><img src="images/persona2.png" />&emsp;&emsp;Eustaquio &emsp;&emsp; &#9733; &#9733; &#9733; &#9733; &#9733;(128)</h3>
+                <p>&emsp;En la parada del bus paran las líneas 3, 24 y 57 <br /></p>
+                <br /><br />
             </div>
 
             <div id="div2" hidden="hidden">
                 <button class="ui-btn ui-shadow" onClick="botonCerrar()" style="float: right;">X</button>
-                <h1 id="h1">Audio 2</h1>
-                <img id="img" src="images/cordova.png" class="img-rounded">
-                <p id="p">Valoración:</p><h2> &#9733; &#9733; &#9734; &#9734; &#9734;</h2>
+                <h1 id="h1"><strong>Serra Grossa</strong></h1>
+                <img id="img" src="images/Serra.png" class="img-rounded">
+                <audio controls="controls">
+                    <source src="audios/chusta1.ogg" type="audio/ogg" />
+                </audio>
+                <p>&emsp;Subido por: Amaya García</p>
+                <p id="contador">&emsp;41 veces reproducido</p>
+                <h2>&emsp; &#9733; &#9733; &#9733; &#9733; &#9733;(6)</h2>
+                <br /><br />
             </div>
 
             <div id="div3" hidden="hidden">
                 <button class="ui-btn ui-shadow" onClick="botonCerrar()" style="float: right;">X</button>
-                <h1 id="h1">Audio 3</h1>
-                <img id="img" src="images/cordova.png" class="img-rounded">
-                <p id="p">Valoración:</p><h2> &#9733; &#9733; &#9734; &#9734; &#9734;</h2>
+                <h1 id="h1"><strong>Centro Cultural Santa Bárbara</strong></h1>
+                <img id="img" src="images/cct.png" class="img-rounded">
+                <audio controls="controls">
+                    <source src="audios/chusta2.ogg" type="audio/ogg" />
+                </audio>
+                <p>&emsp;Subido por: Adrián Doblas</p>
+                <p id="contador">&emsp;102 veces reproducido</p>
+                <h2>&emsp; &#9733; &#9733; &#9733; &#9734; &#9734;(39)</h2>
+                <br /><br />
+                <h2>&emsp;Comentarios:</h2>
+                <h3><img src="images/persona.png" />&emsp;&emsp;Juan Rodríguez &emsp;&emsp; &#9733; &#9733; &#9733; &#9733; &#9734;(2)</h3>
+                <p>&emsp;Acudimos a una Hackatón y nos lo pasamos de miedo.<br />&emsp;Es un lugar muy amplio y bien iluminado</p>
+                <br /><br />
             </div>
         </article>
     </section>
